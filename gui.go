@@ -1539,7 +1539,7 @@ func (g *Gui) matchView(v *View, kb *keybinding) bool {
 	if v == nil {
 		return false
 	}
-	if v.Editable == true && kb.ch != 0 {
+	if v.Editable && kb.ch != 0 {
 		return false
 	}
 	if kb.viewName != v.name {
