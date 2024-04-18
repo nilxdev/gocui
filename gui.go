@@ -663,7 +663,7 @@ func (g *Gui) updateAsyncAux(f func(*Gui) error, task Task) {
 // consider itself 'busy` as it runs the code. Don't use for long-running
 // background goroutines where you wouldn't want lazygit to be considered busy
 // (i.e. when you wouldn't want a loader to be shown to the user)
-func (g *Gui) OnWorker(f func(Task)) {
+func (g *Gui) OnWorker(f func(Task) error) {
 	task := g.NewTask()
 	go func() {
 		g.onWorkerAux(f, task)
@@ -671,7 +671,7 @@ func (g *Gui) OnWorker(f func(Task)) {
 	}()
 }
 
-func (g *Gui) onWorkerAux(f func(Task), task Task) {
+func (g *Gui) onWorkerAux(f func(Task) error, task Task) {
 	panicking := true
 	defer func() {
 		if panicking && Screen != nil {
@@ -679,9 +679,15 @@ func (g *Gui) onWorkerAux(f func(Task), task Task) {
 		}
 	}()
 
-	f(task)
+	err := f(task)
 
 	panicking = false
+
+	if err != nil {
+		g.Update(func(g *Gui) error {
+			return err
+		})
+	}
 }
 
 // A Manager is in charge of GUI's layout and can be used to build widgets.
