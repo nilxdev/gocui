@@ -28,7 +28,6 @@ func TestParseOne(t *testing.T) {
 	parseEscRunes(t, ei, "\x1b[1K")
 	_, ok = ei.instruction.(noInstruction)
 	assert.Equal(t, true, ok)
-
 }
 
 func TestParseOneColours(t *testing.T) {
