@@ -815,17 +815,6 @@ func (g *Gui) onResize() {
 	// g.screen.Sync()
 }
 
-func (g *Gui) clear(fg, bg Attribute) (int, int) {
-	st := getTcellStyle(oldStyle{fg: fg, bg: bg, outputMode: g.outputMode})
-	w, h := Screen.Size()
-	for row := 0; row < h; row++ {
-		for col := 0; col < w; col++ {
-			Screen.SetContent(col, row, ' ', nil, st)
-		}
-	}
-	return w, h
-}
-
 // drawFrameEdges draws the horizontal and vertical edges of a view.
 func (g *Gui) drawFrameEdges(v *View, fgColor, bgColor Attribute) error {
 	runeH, runeV := '─', '│'
