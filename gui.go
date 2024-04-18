@@ -172,6 +172,8 @@ type Gui struct {
 	NextSearchMatchKey interface{}
 	PrevSearchMatchKey interface{}
 
+	ErrorHandler func(error) error
+
 	screen         tcell.Screen
 	suspendedMutex sync.Mutex
 	suspended      bool
@@ -745,19 +747,27 @@ func (g *Gui) MainLoop() error {
 	}
 }
 
+func (g *Gui) handleError(err error) error {
+	if err != nil && !IsQuit(err) && g.ErrorHandler != nil {
+		return g.ErrorHandler(err)
+	}
+
+	return err
+}
+
 func (g *Gui) processEvent() error {
 	select {
 	case ev := <-g.gEvents:
 		task := g.NewTask()
 		defer func() { task.Done() }()
 
-		if err := g.handleEvent(&ev); err != nil {
+		if err := g.handleError(g.handleEvent(&ev)); err != nil {
 			return err
 		}
 	case ev := <-g.userEvents:
 		defer func() { ev.task.Done() }()
 
-		if err := ev.f(g); err != nil {
+		if err := g.handleError(ev.f(g)); err != nil {
 			return err
 		}
 	}
@@ -777,11 +787,11 @@ func (g *Gui) processRemainingEvents() error {
 	for {
 		select {
 		case ev := <-g.gEvents:
-			if err := g.handleEvent(&ev); err != nil {
+			if err := g.handleError(g.handleEvent(&ev)); err != nil {
 				return err
 			}
 		case ev := <-g.userEvents:
-			err := ev.f(g)
+			err := g.handleError(ev.f(g))
 			ev.task.Done()
 			if err != nil {
 				return err
