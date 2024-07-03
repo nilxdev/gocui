@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/jesseduffield/gocui"
+	"github.com/nilxdev/gocui"
 )
 
 func main() {

@@ -1,4 +1,4 @@
-module github.com/jesseduffield/gocui
+module github.com/nilxdev/gocui
 
 go 1.12
 
