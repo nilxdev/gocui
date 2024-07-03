@@ -1,4 +1,4 @@
-# GOCUI - Go Console User Interface
+# GOCUI - Go Console User Interface q
 [![CircleCI](https://circleci.com/gh/awesome-gocui/gocui/tree/master.svg?style=svg)](https://circleci.com/gh/awesome-gocui/gocui/tree/master)
 [![CodeCov](https://codecov.io/gh/awesome-gocui/gocui/branch/master/graph/badge.svg)](https://codecov.io/gh/awesome-gocui/gocui)
 [![Go Report Card](https://goreportcard.com/badge/github.com/awesome-gocui/gocui)](https://goreportcard.com/report/github.com/awesome-gocui/gocui)
